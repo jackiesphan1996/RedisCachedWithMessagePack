@@ -22,9 +22,9 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetAllOrders(int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllOrders(int pageIndex = 1, int pageSize = 10, string keyword = "")
         {
-            var res = await _orderService.GetAllOrderAsync(pageIndex, pageSize);
+            var res = await _orderService.GetAllOrderAsync(pageIndex, pageSize, keyword);
             return Ok(res);
         }
     }

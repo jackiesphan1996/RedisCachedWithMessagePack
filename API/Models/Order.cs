@@ -17,6 +17,7 @@ namespace API.Models
         public int? CustomerId { get; set; }
         [DataMember]
         public string CustomerName { get; set; }
+        [DataMember]
         public int ShopId { get; set; }
         [DataMember]
         public string ServedPerson { get; set; }
@@ -25,6 +26,7 @@ namespace API.Models
         public string DeliveryPhone { get; set; }
         [DataMember]
         public string DeliveryCustomer { get; set; }
+        [DataMember]
         public int StoreId { get; set; }
         [DataMember]
         public string OrderCode { get; set; }
@@ -49,7 +51,9 @@ namespace API.Models
         public string CancelBy { get; set; }
         [DataMember]
         public string ApiLog { get; set; }
+        [DataMember]
         public DiscountType DiscountType { get; set; }
+        [DataMember]
         public  IList<OrderDetail> OrderDetails { get; set; }
     }
 

@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using API.Models;
 using MessagePack;
 using StackExchange.Redis;
-using Order = StackExchange.Redis.Order;
+using Order = API.Models.Order;
 
 namespace API.Services
 {
     public interface IOrderService
     {
-        Task<PaginationSet<Models.Order>> GetAllOrderAsync(int pageIndex, int pageSize);
+        Task<PaginationSet<Order>> GetAllOrderAsync(int pageIndex, int pageSize, string keyword);
     }
     public class OrderService : IOrderService
     {
@@ -23,10 +23,14 @@ namespace API.Services
             _database = redis.GetDatabase();
         }
 
-        public async Task<PaginationSet<Models.Order>> GetAllOrderAsync(int pageIndex, int pageSize)
+        public async Task<PaginationSet<Order>> GetAllOrderAsync(int pageIndex, int pageSize, string keyword)
         {
             var totalData = await GetAllAsync();
             var orders = totalData as Models.Order[] ?? totalData.ToArray();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                orders = orders.Where(x => x.OrderCode.Contains(keyword) || (x.CancelBy != null && x.CancelBy.Contains(keyword))).ToArray();
+            }
             var queryData = orders.OrderByDescending(x => x.CheckInDate).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             var res = new PaginationSet<Models.Order>
             {
@@ -48,7 +52,7 @@ namespace API.Services
                     return null;
                 }
 
-                return MessagePackSerializer.Deserialize<IEnumerable<Models.Order>>(data);
+                return MessagePackSerializer.Deserialize<IEnumerable<Order>>(data);
             }
             catch (Exception ex)
             {
