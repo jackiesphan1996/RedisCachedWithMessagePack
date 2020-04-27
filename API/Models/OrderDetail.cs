@@ -8,15 +8,17 @@ namespace API.Models
         [DataMember]
         public int Id { get; set; }
         [DataMember]
-        public decimal UnitPrice { get; set; }
+        public int OrderId { get; set; }
+        [DataMember]
+        public string Size { get; set; }
+        [DataMember]
+        public decimal Cost { get; set; }
+        [DataMember]
+        public string ProductName { get; set; }
         [DataMember]
         public int Quantity { get; set; }
         [DataMember]
-        public int ProductSizeId { get; set; }
-        [DataMember]
-        public int OrderId { get; set; }
-        [DataMember]
-        public int CategoryId { get; set; }
+        public decimal Total => Cost * Quantity;
         [DataMember]
         public string Description { get; set; }
     }

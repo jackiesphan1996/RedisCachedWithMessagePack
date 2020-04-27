@@ -8,53 +8,91 @@ namespace API.Models
     public class Order
     {
         [DataMember]
+        public long? RowCounts { get; set; }
+        [DataMember]
         public int Id { get; set; }
-        [DataMember]
-        public string Description { get; set; }
-        [DataMember]
-        public string UserId { get; set; }
-        [DataMember]
-        public int? CustomerId { get; set; }
-        [DataMember]
-        public string CustomerName { get; set; }
-        [DataMember]
-        public int ShopId { get; set; }
-        [DataMember]
-        public string ServedPerson { get; set; }
-        [DataMember]
-        public string DeliveryAddress { get; set; }
-        public string DeliveryPhone { get; set; }
-        [DataMember]
-        public string DeliveryCustomer { get; set; }
-        [DataMember]
-        public int StoreId { get; set; }
         [DataMember]
         public string OrderCode { get; set; }
         [DataMember]
-        public System.DateTime CheckInDate { get; set; }
-        public Nullable<System.DateTime> CheckOutDate { get; set; }
+        public string CustomerName { get; set; }
         [DataMember]
-        public Nullable<System.DateTime> ApproveDate { get; set; }
-        public double TotalAmount { get; set; }
+        public string PhoneNumber { get; set; }
         [DataMember]
-        public double FinalAmount { get; set; }
+        public string Address { get; set; }
+        [DataMember]
+        public string StaffName { get; set; }
+        [DataMember]
+        public double TotalCost { get; set; }
+        [DataMember]
+        public DateTime? CreatedDate { get; set; }
+        [DataMember]
+        public string CreateDateTime => CreatedDate.HasValue ? CreatedDate.Value.ToString("dd-MM-yyyy HH:mm ") : "";
+        [DataMember]
+        public List<OrderDetail> OrderDetails { get; set; }
+        [DataMember]
+        public DateTime? CancelDate { get; set; }
+        [DataMember]
+        public string CancelDateTime => CancelDate.HasValue ? CancelDate.Value.ToString("dd-MM-yyyy HH:mm ") : "";
+        [DataMember]
+        public string CancelBy { get; set; }
         [DataMember]
         public OrderStatus OrderStatus { get; set; }
         [DataMember]
-        public string CheckInPerson { get; set; }
-        [DataMember]
-        public string CheckOutPerson { get; set; }
-        [DataMember]
-        public string ApprovePerson { get; set; }
-        [DataMember]
-        public DateTime? CancelDate { get; set; }
-        public string CancelBy { get; set; }
-        [DataMember]
-        public string ApiLog { get; set; }
+        public string OrderStatusDisplay
+        {
+            get
+            {
+                var description = "";
+                switch (OrderStatus)
+                {
+                    case OrderStatus.PosFinished:
+                        description = "Hoàn tất";
+                        break;
+                    case OrderStatus.PreCancel:
+                        description = "Hủy";
+                        break;
+                    case OrderStatus.Cancel:
+                        description = "Hủy";
+                        break;
+                    case OrderStatus.PosCancel:
+                        description = "Hủy";
+                        break;
+                    case OrderStatus.PosPreCancel:
+                        description = "Hủy";
+                        break;
+                }
+                return description;
+            }
+        }
         [DataMember]
         public DiscountType DiscountType { get; set; }
         [DataMember]
-        public  IList<OrderDetail> OrderDetails { get; set; }
+        public string DiscountTypeDisplay
+        {
+            get
+            {
+                var description = "";
+                switch (DiscountType)
+                {
+                    case DiscountType.OneGetOne:
+                        description = "1 tặng 1";
+                        break;
+                    case DiscountType._20kDiscount:
+                        description = "20.000";
+                        break;
+                    case DiscountType.FiveGetOne:
+                        description = "Mua 5 tặng 1";
+                        break;
+                    case DiscountType.Delivery:
+                        description = "Delivery";
+                        break;
+                    case DiscountType.Sharing:
+                        description = "Sharing";
+                        break;
+                }
+                return description;
+            }
+        }
     }
 
     public enum OrderStatus

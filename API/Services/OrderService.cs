@@ -29,9 +29,13 @@ namespace API.Services
             var orders = totalData as Models.Order[] ?? totalData.ToArray();
             if (!string.IsNullOrEmpty(keyword))
             {
-                orders = orders.Where(x => x.OrderCode.Contains(keyword) || (x.CancelBy != null && x.CancelBy.Contains(keyword))).ToArray();
+                orders = orders.Where(x => x.OrderCode.Contains(keyword)
+                                       || (!string.IsNullOrEmpty(x.CancelBy) && x.CancelBy.Contains(keyword))
+                                       || (!string.IsNullOrEmpty(x.StaffName) && x.StaffName.Contains(keyword))
+                                       || (!string.IsNullOrEmpty(x.CustomerName) && x.CustomerName.Contains(keyword))
+                ).ToArray();
             }
-            var queryData = orders.OrderByDescending(x => x.CheckInDate).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            var queryData = orders.OrderByDescending(x => x.CreateDateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             var res = new PaginationSet<Models.Order>
             {
                 Items = queryData,
